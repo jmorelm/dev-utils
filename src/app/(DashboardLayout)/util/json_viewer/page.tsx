@@ -1,28 +1,25 @@
-"use client"
-import React, { useEffect, useState } from 'react';
+'use client'
+import React, { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
-
 import styled from 'styled-components';
+import { Button } from '@mui/material';
 
 const JSONViewer = () => {
   const [jsonData, setJsonData] = useState(null);
-
+  const [fileName, setFileName] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
   const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
   `;
-  
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      return;
-    }
-  }, []);
 
   const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     const file = event.target.files?.[0];
     if (file) {
+      setFileName(file.name);
       const reader = new FileReader();
       reader.onload = (e: ProgressEvent<FileReader>) => {
         const content = e.target?.result as string;
@@ -33,13 +30,34 @@ const JSONViewer = () => {
     }
   };
 
+  const handleButtonClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
   const handleEdit = (edit: { updated_src: any }) => {
     setJsonData(edit.updated_src);
   };
 
   return (
     <Container>
-      <input type="file" accept=".json" onChange={handleFileChange} />
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".json"
+        onChange={handleFileChange}
+        style={{ display: 'none' }}
+      />
+      <Button
+        variant="contained"
+        color="success"
+        style={{ marginTop: '12px' }}
+        onClick={handleButtonClick}
+      >
+        Seleccionar Archivo
+      </Button>
+      {fileName && <p>Archivo seleccionado: {fileName}</p>}
       {jsonData && (
         <DynamicReactJson
           style={{ width: '100%', marginTop: '30px' }}

@@ -39,7 +39,6 @@ const SwaggerGenPage = () => {
     const onChangeReferenceSwagger = (value: string) => {
         try {
             const parsedSwagger = JSON.parse(value);
-            // Realizar algunas validaciones adicionales del Swagger de referencia, si es necesario
             setReferenceSwagger(parsedSwagger); 
         } catch (error) {
             console.error('Error al analizar el JSON del Swagger de referencia:', error);
@@ -73,7 +72,7 @@ const SwaggerGenPage = () => {
 
     const convertirAClaseSwagger = (cSharpModel: string, modelName: string) => {
         const properties: Record<string, any> = {};
-        const className = modelName; // Utilizamos el nombre del modelo proporcionado como parámetro
+        const className = modelName;
     
         const lines = cSharpModel.split('\n');
         for (const line of lines) {
@@ -85,7 +84,7 @@ const SwaggerGenPage = () => {
             }
         }
     
-        return { type: 'object', properties }; // Devolvemos un objeto con las propiedades del modelo
+        return { type: 'object', properties };
     };
     
 
@@ -122,12 +121,15 @@ const SwaggerGenPage = () => {
             }
         };
     };
+
+    const placeholderRequest = "public class RequestModel {\n     public string Usuario { get; set; }\n     public string Password { get; set; }\n }";
+    const placeholderResponse = "public class ResponseModel {\n     public int Codigo { get; set; }\n     public string Mensaje { get; set; }\n }";
     
 
     return (
-        <PageContainer title="Swagger Generator" description="Utilidad para generar archivo Swagger v2.0">
+        <PageContainer title="Generar Swagger.json" description="Utilidad para generar archivo Swagger v2.0">
 
-            <h2 style={{ textAlign: "center" }}>GENERAR ARCHIVO SWAGGER</h2>
+            <h2 style={{ textAlign: "center" }}>GENERAR ARCHIVO SWAGGER V2 - C# .NET</h2>
 
             <div>
                 <h3>Datos del Endpoint</h3>
@@ -165,30 +167,69 @@ const SwaggerGenPage = () => {
                 <Editor
                     mode="csharp"
                     theme="monokai"
+                    placeholder={`${placeholderRequest}`}
                     onChange={onChangeRequest}
+                    fontSize={14}
+                    lineHeight={19}
+                    showPrintMargin={true}
+                    showGutter={true}
+                    highlightActiveLine={true}
                     width="100%"
                     height='200px'
+                    setOptions={{
+                        enableBasicAutocompletion: true,
+                        enableLiveAutocompletion: true,
+                        enableSnippets: true,
+                        showLineNumbers: true,
+                        tabSize: 2,
+                    }}
                 />
 
                 <h3>Response</h3>
                 <Editor
                     mode="csharp"
                     theme="monokai"
+                    placeholder={`${placeholderResponse}`}
                     onChange={onChangeResponse}
+                    fontSize={14}
+                    lineHeight={19}
+                    showPrintMargin={true}
+                    showGutter={true}
+                    highlightActiveLine={true}
                     width="100%"
                     height='200px'
+                    setOptions={{
+                        enableBasicAutocompletion: true,
+                        enableLiveAutocompletion: true,
+                        enableSnippets: true,
+                        showLineNumbers: true,
+                        tabSize: 2,
+                    }}
                 />
 
                 <h3>Doc. Swagger de referencia</h3>
                 <Editor
                     mode="json"
                     theme="monokai"
+                    placeholder="Pegar aqui el contenido del archivo Swagger.json"
                     onChange={onChangeReferenceSwagger}
+                    fontSize={14}
+                    lineHeight={19}
+                    showPrintMargin={true}
+                    showGutter={true}
+                    highlightActiveLine={true}
                     width="100%"
                     height='500px'
+                    setOptions={{
+                        enableBasicAutocompletion: true,
+                        enableLiveAutocompletion: true,
+                        enableSnippets: true,
+                        showLineNumbers: true,
+                        tabSize: 2,
+                    }}
                 />
 
-                <div style={{ textAlign: "right" }}>
+                <div style={{ textAlign: "right", marginTop: "4px" }}>
                     <Button onClick={generarArchivoSwagger} variant="contained" color="success" style={{ marginTop: "12px" }}>
                         Generar Archivo Swagger
                     </Button>
