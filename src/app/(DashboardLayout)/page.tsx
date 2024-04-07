@@ -1,15 +1,13 @@
 'use client'
-
-import { Box } from "@mui/material";
 import PageContainer from "./components/container/PageContainer";
 import SwaggerGenPage from "./util/swagger_gen/page";
 
-const Dashboard = () => {
+const Principal = () => {
   return (
-    <PageContainer title="" description="this is Dashboard">
+    <PageContainer title="" description="">
       <SwaggerGenPage></SwaggerGenPage>
     </PageContainer>
   )
 }
 
-export default Dashboard;
+export default Principal;

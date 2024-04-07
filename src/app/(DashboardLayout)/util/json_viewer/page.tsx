@@ -12,12 +12,7 @@ const Container = styled.div`
 
 const JSONViewer = () => {
   const [jsonData, setJsonData] = useState(null);
-
-  // Verificar si estamos en el cliente
-  if (typeof document === 'undefined') {
-    return null; // No renderizar nada en el servidor
-  }
-
+  
   const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     const file = event.target.files?.[0];
     if (file) {
