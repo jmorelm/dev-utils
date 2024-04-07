@@ -12,7 +12,7 @@ const SwaggerGenPage = () => {
     const [responseModel, setResponseModel] = useState<string>('');
     const [endpoint, setEndpoint] = useState<string>('');
     const [method, setMethod] = useState<string>('GET');
-    const [referenceSwagger, setReferenceSwagger] = useState<any>(null); 
+    const [referenceSwagger, setReferenceSwagger] = useState<any>(null);
 
     useEffect(() => {
         if (typeof document !== 'undefined') {
@@ -39,7 +39,7 @@ const SwaggerGenPage = () => {
     const onChangeReferenceSwagger = (value: string) => {
         try {
             const parsedSwagger = JSON.parse(value);
-            setReferenceSwagger(parsedSwagger); 
+            setReferenceSwagger(parsedSwagger);
         } catch (error) {
             console.error('Error al analizar el JSON del Swagger de referencia:', error);
             setReferenceSwagger(null);
@@ -52,7 +52,7 @@ const SwaggerGenPage = () => {
             return;
         }
 
-        const modifiedSwaggerJson = { ...referenceSwagger }; 
+        const modifiedSwaggerJson = { ...referenceSwagger };
 
         const requestSwaggerModel = convertirAClaseSwagger(requestModel, 'RequestModel');
         const responseSwaggerModel = convertirAClaseSwagger(responseModel, 'ResponseModel');
@@ -73,7 +73,7 @@ const SwaggerGenPage = () => {
     const convertirAClaseSwagger = (cSharpModel: string, modelName: string) => {
         const properties: Record<string, any> = {};
         const className = modelName;
-    
+
         const lines = cSharpModel.split('\n');
         for (const line of lines) {
             const match = line.trim().match(/public (\w+) (\w+) { get; set; }/);
@@ -83,10 +83,10 @@ const SwaggerGenPage = () => {
                 properties[propName] = convertirTipoSwagger(type);
             }
         }
-    
+
         return { type: 'object', properties };
     };
-    
+
 
     const convertirTipoSwagger = (cSharpType: string) => {
         switch (cSharpType) {
@@ -124,7 +124,7 @@ const SwaggerGenPage = () => {
 
     const placeholderRequest = "public class RequestModel {\n     public string Usuario { get; set; }\n     public string Password { get; set; }\n }";
     const placeholderResponse = "public class ResponseModel {\n     public int Codigo { get; set; }\n     public string Mensaje { get; set; }\n }";
-    
+
 
     return (
         <PageContainer title="Generar Swagger.json" description="Utilidad para generar archivo Swagger v2.0">
@@ -132,7 +132,7 @@ const SwaggerGenPage = () => {
             <h2 style={{ textAlign: "center" }}>GENERAR ARCHIVO SWAGGER V2 - C# .NET</h2>
 
             <div>
-                <h3>Datos del Endpoint</h3>
+                <h3>Endpoint</h3>
                 <div style={{ marginBottom: "8px" }}>
                     <TextField
                         required
@@ -163,49 +163,54 @@ const SwaggerGenPage = () => {
             </div>
 
             <div>
-                <h3>Request</h3>
-                <Editor
-                    mode="csharp"
-                    theme="monokai"
-                    placeholder={`${placeholderRequest}`}
-                    onChange={onChangeRequest}
-                    fontSize={14}
-                    lineHeight={19}
-                    showPrintMargin={true}
-                    showGutter={true}
-                    highlightActiveLine={true}
-                    width="100%"
-                    height='200px'
-                    setOptions={{
-                        enableBasicAutocompletion: true,
-                        enableLiveAutocompletion: true,
-                        enableSnippets: true,
-                        showLineNumbers: true,
-                        tabSize: 2,
-                    }}
-                />
-
-                <h3>Response</h3>
-                <Editor
-                    mode="csharp"
-                    theme="monokai"
-                    placeholder={`${placeholderResponse}`}
-                    onChange={onChangeResponse}
-                    fontSize={14}
-                    lineHeight={19}
-                    showPrintMargin={true}
-                    showGutter={true}
-                    highlightActiveLine={true}
-                    width="100%"
-                    height='200px'
-                    setOptions={{
-                        enableBasicAutocompletion: true,
-                        enableLiveAutocompletion: true,
-                        enableSnippets: true,
-                        showLineNumbers: true,
-                        tabSize: 2,
-                    }}
-                />
+                <div style={{ display: 'flex', gap: '20px' }}>
+                    <div style={{ flex: '1' }}>
+                        <h3>Request</h3>
+                        <Editor
+                            mode="csharp"
+                            theme="monokai"
+                            placeholder={`${placeholderRequest}`}
+                            onChange={onChangeRequest}
+                            fontSize={14}
+                            lineHeight={19}
+                            showPrintMargin={true}
+                            showGutter={true}
+                            highlightActiveLine={true}
+                            width="100%"
+                            height="200px"
+                            setOptions={{
+                                enableBasicAutocompletion: true,
+                                enableLiveAutocompletion: true,
+                                enableSnippets: true,
+                                showLineNumbers: true,
+                                tabSize: 2,
+                            }}
+                        />
+                    </div>
+                    <div style={{ flex: '1' }}>
+                        <h3>Response</h3>
+                        <Editor
+                            mode="csharp"
+                            theme="monokai"
+                            placeholder={`${placeholderResponse}`}
+                            onChange={onChangeResponse}
+                            fontSize={14}
+                            lineHeight={19}
+                            showPrintMargin={true}
+                            showGutter={true}
+                            highlightActiveLine={true}
+                            width="100%"
+                            height="200px"
+                            setOptions={{
+                                enableBasicAutocompletion: true,
+                                enableLiveAutocompletion: true,
+                                enableSnippets: true,
+                                showLineNumbers: true,
+                                tabSize: 2,
+                            }}
+                        />
+                    </div>
+                </div>
 
                 <h3>Doc. Swagger de referencia</h3>
                 <Editor
@@ -219,7 +224,7 @@ const SwaggerGenPage = () => {
                     showGutter={true}
                     highlightActiveLine={true}
                     width="100%"
-                    height='500px'
+                    height='300px'
                     setOptions={{
                         enableBasicAutocompletion: true,
                         enableLiveAutocompletion: true,
