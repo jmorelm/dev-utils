@@ -1,18 +1,25 @@
 "use client"
-import React, { useState } from 'react';
-import ReactJson from 'react-json-view';
-import styled from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-`;
+import styled from 'styled-components';
 
 const JSONViewer = () => {
   const [jsonData, setJsonData] = useState(null);
+
+  const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  `;
   
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      return;
+    }
+  }, []);
+
   const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -34,7 +41,7 @@ const JSONViewer = () => {
     <Container>
       <input type="file" accept=".json" onChange={handleFileChange} />
       {jsonData && (
-        <ReactJson
+        <DynamicReactJson
           style={{ width: '100%', marginTop: '30px' }}
           src={jsonData}
           theme="paraiso"
@@ -50,5 +57,7 @@ const JSONViewer = () => {
     </Container>
   );
 };
+
+const DynamicReactJson = dynamic(() => import('react-json-view'), { ssr: false });
 
 export default JSONViewer;

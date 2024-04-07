@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     basePath: "/dev-utils",
-    output: "standalone",
+    output: "export",
     reactStrictMode: true,
 }
 

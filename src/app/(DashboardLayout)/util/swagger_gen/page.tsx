@@ -14,6 +14,12 @@ const SwaggerGenPage = () => {
     const [method, setMethod] = useState<string>('GET');
     const [referenceSwagger, setReferenceSwagger] = useState<any>(null); 
 
+    useEffect(() => {
+        if (typeof document !== 'undefined') {
+            return;
+        }
+    }, []);
+
     const onChangeRequest = (value: string) => {
         setRequestModel(value);
     };
