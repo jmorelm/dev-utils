@@ -16,8 +16,6 @@
     "@mui/icons-material": "latest",
     "@mui/lab": "^5.0.0-alpha.117",
     "@mui/material": "^5.15.15",
-    "@react-three/drei": "^9.105.1",
-    "@react-three/fiber": "^8.16.1",
     "@tabler/icons-react": "^2.1.1",
     "@types/file-saver": "^2.0.7",
     "@types/node": "20.2.3",
@@ -41,7 +39,6 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.194",
-    "@types/three": "^0.163.0"
+    "@types/lodash": "^4.14.194"
   }
 }

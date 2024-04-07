@@ -1,8 +1,6 @@
-import {
-  IconCode,
-} from "@tabler/icons-react";
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import KeyIcon from '@mui/icons-material/Key';
 
 import { uniqueId } from "lodash";
 
@@ -22,6 +20,12 @@ const Menuitems = [
     title: "JSON Editor",
     icon: AccountTreeIcon,
     href: "/util/json_viewer",
+  },
+  {
+    id: uniqueId(),
+    title: "Generar API Key",
+    icon: KeyIcon,
+    href: "/util/api_key",
   },
 ];
 
