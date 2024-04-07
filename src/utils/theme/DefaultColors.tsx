@@ -11,20 +11,21 @@ export const plus = Plus_Jakarta_Sans({
 const baselightTheme = createTheme({
   direction: "ltr",
   palette: {
+    mode: 'dark',
     primary: {
-      main: "#5D87FF",
-      light: "#ECF2FF",
-      dark: "#4570EA",
+      main: "#b39647",
+      light: "#d6d1c7",
+      dark: "#d6bb72",
     },
     secondary: {
-      main: "#49BEFF",
-      light: "#E8F7FF",
-      dark: "#23afdb",
+      main: "#d1bf8e",
+      light: "#d6d1c7",
+      dark: "#ebddb7",
     },
     success: {
-      main: "#13DEB9",
-      light: "#E6FFFA",
-      dark: "#02b3a9",
+      main: "#d6a336",
+      light: "#d6d1c7",
+      dark: "#e0af43",
       contrastText: "#ffffff",
     },
     info: {
@@ -54,8 +55,8 @@ const baselightTheme = createTheme({
       600: "#2A3547",
     },
     text: {
-      primary: "#2A3547",
-      secondary: "#5A6A85",
+      primary: "#FFFFFF",
+      secondary: "#FFF999",
     },
     action: {
       disabledBackground: "rgba(73,82,88,0.12)",
