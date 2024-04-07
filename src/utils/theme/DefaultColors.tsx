@@ -1,3 +1,4 @@
+import { outlinedInputClasses } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { Plus_Jakarta_Sans } from "next/font/google";
 
@@ -11,6 +12,7 @@ export const plus = Plus_Jakarta_Sans({
 const baselightTheme = createTheme({
   direction: "ltr",
   palette: {
+    contrastThreshold: 4.5,
     mode: 'dark',
     primary: {
       main: "#b39647",
@@ -19,32 +21,32 @@ const baselightTheme = createTheme({
     },
     secondary: {
       main: "#d1bf8e",
-      light: "#d6d1c7",
-      dark: "#ebddb7",
+      light: "#ebddb7",
+      dark: "#a7956e",
     },
     success: {
       main: "#d6a336",
-      light: "#d6d1c7",
-      dark: "#e0af43",
-      contrastText: "#ffffff",
+      light: "#e0af43",
+      dark: "#875b19",
+      contrastText: "#000000",
     },
     info: {
-      main: "#539BFF",
-      light: "#EBF3FE",
-      dark: "#1682d4",
-      contrastText: "#ffffff",
+      main: "#E5E746",
+      light: "#E6E841",
+      dark: "#D4DD45",
+      contrastText: "#000000",
     },
     error: {
       main: "#FA896B",
-      light: "#FDEDE8",
-      dark: "#f3704d",
-      contrastText: "#ffffff",
+      light: "#f3704d",
+      dark: "#a82308",
+      contrastText: "#000000",
     },
     warning: {
       main: "#FFAE1F",
-      light: "#FEF5E5",
-      dark: "#ae8e59",
-      contrastText: "#ffffff",
+      light: "#ffd15a",
+      dark: "#b57e00",
+      contrastText: "#000000",
     },
     grey: {
       100: "#F2F6FA",
@@ -61,7 +63,7 @@ const baselightTheme = createTheme({
     action: {
       disabledBackground: "rgba(73,82,88,0.12)",
       hoverOpacity: 0.02,
-      hover: "#f6f9fc",
+      hover: "#000000",
     },
     divider: "#e5eaef",
   },
@@ -137,6 +139,18 @@ const baselightTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: "7px",
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          '&:-webkit-autofill': {
+            WebkitBoxShadow: '0 0 0 100px #266798 inset',
+            WebkitTextFillColor: '#fff',
+            caretColor: '#fff',
+            borderRadius: 'inherit',
+          },
         },
       },
     },
