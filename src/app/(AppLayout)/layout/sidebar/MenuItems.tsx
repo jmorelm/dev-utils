@@ -1,7 +1,7 @@
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import KeyIcon from '@mui/icons-material/Key';
-
+import DifferenceIcon from '@mui/icons-material/Difference';
 import { uniqueId } from "lodash";
 
 const Menuitems = [
@@ -26,6 +26,12 @@ const Menuitems = [
     title: "Generar API Key",
     icon: KeyIcon,
     href: "/util/api_key",
+  },
+  {
+    id: uniqueId(),
+    title: "Comparar Texto",
+    icon: DifferenceIcon,
+    href: "/util/comparison_tool",
   },
 ];
 

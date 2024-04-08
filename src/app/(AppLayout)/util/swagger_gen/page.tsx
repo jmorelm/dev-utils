@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Editor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-csharp';
 import 'ace-builds/src-noconflict/theme-monokai';
-import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
+import PageContainer from '@/app/(AppLayout)/components/container/PageContainer';
 import { saveAs } from 'file-saver';
 import { Button, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 
