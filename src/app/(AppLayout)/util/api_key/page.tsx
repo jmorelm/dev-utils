@@ -1,22 +1,38 @@
 'use client'
 import React, { useState } from 'react';
 import { generateApiKey } from '@/lib/ApiKey';
-import { TextField, Button, Grid, IconButton, Icon } from '@mui/material';
+import { TextField, Button, Grid, Icon } from '@mui/material';
 import { FileCopy } from '@mui/icons-material';
 import PageContainer from '../../components/container/PageContainer';
+import { GenericToast } from '../(components)/GenericToast';
 
 const GenerateApiKeyPage = () => {
     const [newApiKey, setNewApiKey] = useState('');
 
     const handleClick = async () => {
-        const apiKey = await generateApiKey();
-        if (apiKey) {
-            setNewApiKey(apiKey);
+        try {
+            const apiKey = await generateApiKey();
+            if (apiKey) {
+                setNewApiKey(apiKey);
+                GenericToast.showSuccess("API Key generada con éxito");
+            } else {
+                GenericToast.showWarning("No se pudo generar la API Key");
+            }
+        } catch (error) {
+            GenericToast.showError("Error al generar la API Key");
         }
     };
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(newApiKey);
+        if (newApiKey) {
+            navigator.clipboard.writeText(newApiKey).then(() => {
+                GenericToast.showSuccess("API Key copiada al portapapeles");
+            }).catch(() => {
+                GenericToast.showError("Error al copiar la API Key");
+            });
+        } else {
+            GenericToast.showInfo("No hay API Key para copiar");
+        }
     };
 
     return (
@@ -26,11 +42,7 @@ const GenerateApiKeyPage = () => {
                 <Button type="submit" variant="contained" color="primary" onClick={handleClick}>
                     GENERAR
                 </Button>
-                <Button style={{ marginLeft: '4px' }} variant="contained" onClick={handleCopy} startIcon={
-                    <Icon>
-                        <FileCopy />
-                    </Icon>
-                }>
+                <Button style={{ marginLeft: '4px' }} variant="contained" onClick={handleCopy} startIcon={<FileCopy />}>
                     Copiar al portapapeles
                 </Button>
                 <Grid container spacing={2} alignItems="center">

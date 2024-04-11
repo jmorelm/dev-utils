@@ -3,6 +3,7 @@ import { styled, Container, Box } from "@mui/material";
 import React, { useState } from "react";
 import Header from "@/app/(AppLayout)/layout/header/Header";
 import Sidebar from "@/app/(AppLayout)/layout/sidebar/Sidebar";
+import { GenericToastComponent } from "./util/(components)/GenericToast";
 
 
 const MainWrapper = styled("div")(() => ({
@@ -68,6 +69,7 @@ export default function RootLayout({
           {/* End Page */}
           {/* ------------------------------------------- */}
         </Container>
+        <GenericToastComponent />
       </PageWrapper>
     </MainWrapper>
   );
