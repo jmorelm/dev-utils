@@ -19,7 +19,7 @@ const ComparePage = () => {
                             placeholder="Contenido del archivo 1"
                             rows={10}
                             cols={50}
-                            style={{ height: '400px', width: '100%', borderRadius: '12px', padding: '8px' }}
+                            style={{ height: '400px', width: '100%', borderRadius: '12px', padding: '12px' }}
                         />
                     </div>
                     <div style={{ flex: '1' }}>
@@ -29,7 +29,7 @@ const ComparePage = () => {
                             placeholder="Contenido del archivo 2"
                             rows={10}
                             cols={50}
-                            style={{ height: '400px', width: '100%', borderRadius: '12px', padding: '8px' }}
+                            style={{ height: '400px', width: '100%', borderRadius: '12px', padding: '12px' }}
                         />
                     </div>
                 </div>
@@ -41,7 +41,7 @@ const ComparePage = () => {
                         styles={{
                             diffContainer: {
                                 height: '400px',
-                                padding: '8px',
+                                padding: '12px',
                                 backgroundColor: '#2e303c',
                                 color: '#FFF',
                                 borderRadius: '12px'
