@@ -46,6 +46,12 @@ const Menuitems = [
     icon: SwapHorizIcon,
     href: "/util/base64_tools",
   },
+  {
+    id: uniqueId(),
+    title: "Oracle - EF",
+    icon: SwapHorizIcon,
+    href: "/util/oracle_to_entity_framework",
+  },
 ];
 
 export default Menuitems;
