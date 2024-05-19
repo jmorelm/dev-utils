@@ -1,3 +1,4 @@
+//queryUtils.ts
 import { TypeMapping } from "../(types)/types";
 
 export function generateEFModel(columns: { originalName: string; transformedName: string; cSharpType: string, isId: boolean }[]): string {
@@ -52,6 +53,16 @@ export function generateJoinQuery(tables: { tableName: string, columns: { transf
     }
     return query;
 }
+
+export const generateJoinQueryAdapted = (columns: any[], joins: { leftTable: string; rightTable: string; onCondition: string; }[], options: { useAsNoTracking: boolean; useToList: boolean; }) => {
+    // Adapt single flat list of columns into structure expected by generateJoinQuery
+    const tables = [{
+        tableName: 'YourDefaultTableName', // You might need a way to determine table names dynamically
+        columns: columns.map((col: { transformedName: any; }) => ({ transformedName: col.transformedName }))
+    }];
+
+    return generateJoinQuery(tables, joins, options);
+};
 
 export function a11yProps(index: number) {
     return {
