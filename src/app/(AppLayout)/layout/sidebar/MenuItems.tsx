@@ -34,18 +34,34 @@ const Menuitems = [
     icon: DifferenceIcon,
     href: "/util/comparison_tool",
   },
-  {
-    id: uniqueId(),
-    title: "PLSQL Analyzer",
-    icon: TroubleshootIcon,
-    href: "/util/plsql_editor",
-  },
+  // {
+  //   id: uniqueId(),
+  //   title: "PLSQL Analyzer",
+  //   icon: TroubleshootIcon,
+  //   href: "/util/plsql_editor",
+  // },
   {
     id: uniqueId(),
     title: "Base64 Tools",
     icon: SwapHorizIcon,
     href: "/util/base64_tools",
   },
+  {
+    navLavel: true,
+    subheader: "QA"
+  },
+  {
+    id: uniqueId(),
+    title: "Pasos de compilacion",
+    icon: SwapHorizIcon,
+    href: "/qa/comp_steps",
+  },
+  // {
+  //   id: uniqueId(),
+  //   title: "Oracle - EF",
+  //   icon: SwapHorizIcon,
+  //   href: "/util/oracle_to_entity_framework",
+  // },
 ];
 
 export default Menuitems;
