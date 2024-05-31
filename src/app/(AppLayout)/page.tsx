@@ -1,11 +1,11 @@
 'use client'
 import PageContainer from "./components/container/PageContainer";
-import SwaggerGenPage from "./util/swagger_gen/page";
+import ComparePage from "./util/comparison_tool/page";
 
 const Principal = () => {
   return (
     <PageContainer title="" description="">
-      <SwaggerGenPage></SwaggerGenPage>
+      <ComparePage></ComparePage>
     </PageContainer>
   )
 }
