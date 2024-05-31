@@ -13,6 +13,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/server": "latest",
     "@emotion/styled": "^11.11.5",
+    "@hello-pangea/dnd": "^16.6.0",
     "@mui/icons-material": "latest",
     "@mui/lab": "^5.0.0-alpha.117",
     "@mui/material": "^5.15.15",
@@ -39,6 +40,7 @@
     "react": "^18.2.0",
     "react-ace": "^11.0.1",
     "react-apexcharts": "^1.4.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-diff-view": "^3.2.1",
     "react-diff-viewer": "^3.1.1",
     "react-dom": "18.2.0",
@@ -48,13 +50,16 @@
     "react-syntax-highlighter": "^15.5.0",
     "react-toastify": "^10.0.5",
     "styled-components": "^6.1.8",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/ace-diff": "^2.1.4",
     "@types/diff": "^5.0.9",
     "@types/lodash": "^4.14.194",
+    "@types/react-beautiful-dnd": "^13.1.8",
     "@types/react-sortable-tree": "^0.3.23",
-    "@types/react-syntax-highlighter": "^15.5.11"
+    "@types/react-syntax-highlighter": "^15.5.11",
+    "@types/uuid": "^9.0.8"
   }
 }

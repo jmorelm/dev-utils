@@ -46,6 +46,16 @@ const Menuitems = [
     icon: SwapHorizIcon,
     href: "/util/base64_tools",
   },
+  {
+    navLavel: true,
+    subheader: "QA"
+  },
+  {
+    id: uniqueId(),
+    title: "Pasos de compilacion",
+    icon: SwapHorizIcon,
+    href: "/qa/comp_steps",
+  },
   // {
   //   id: uniqueId(),
   //   title: "Oracle - EF",
