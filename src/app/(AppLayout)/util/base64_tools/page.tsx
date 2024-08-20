@@ -88,6 +88,7 @@ const Base64Converter = () => {
 
     return (
         <div style={{ marginTop: '20px' }}>
+            <h2 style={{ textAlign: "center" }}>HERRAMIENTAS BASE 64</h2>
             <Tabs value={tabIndex} onChange={handleTabChange}>
                 <Tab label="Base64 a PDF" />
                 <Tab label="Base64 Encoder/Decoder" />

@@ -1,14 +1,5 @@
 import React from "react";
-// mui imports
-import {
-  ListItemIcon,
-  ListItem,
-  List,
-  styled,
-  ListItemText,
-  useTheme,
-  ListItemButton,
-} from "@mui/material";
+import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled, useTheme } from "@mui/material";
 import Link from "next/link";
 
 type NavGroup = {
@@ -19,21 +10,24 @@ type NavGroup = {
   title?: string;
   icon?: any;
   href?: any;
+  disabled?: boolean;
+  external?: boolean;
   onClick?: React.MouseEvent<HTMLButtonElement, MouseEvent>;
 };
 
 interface ItemType {
   item: NavGroup;
+  pathDirect: string;
   onClick: (event: React.MouseEvent<HTMLElement>) => void;
+  isCollapsed: boolean;
   hideMenu?: any;
   level?: number | any;
-  pathDirect: string;
 }
 
-const NavItem = ({ item, level, pathDirect, onClick }: ItemType) => {
+const NavItem = ({ item, level, pathDirect, onClick, isCollapsed }: ItemType) => {
   const Icon = item.icon;
+
   const theme = useTheme();
-  const itemIcon = <Icon stroke={1.5} size="1.3rem" />;
 
   const ListItemStyled = styled(ListItem)(() => ({
     padding: 0,
@@ -59,7 +53,6 @@ const NavItem = ({ item, level, pathDirect, onClick }: ItemType) => {
       },
     },
   }));
-
   return (
     <List component="div" disablePadding key={item.id}>
       <ListItemStyled>
@@ -70,19 +63,21 @@ const NavItem = ({ item, level, pathDirect, onClick }: ItemType) => {
           selected={pathDirect === item.href}
           target={item.external ? "_blank" : ""}
           onClick={onClick}
+          sx={{
+            justifyContent: isCollapsed ? "center" : "flex-start",
+            paddingLeft: isCollapsed ? 5 : 3,
+          }}
         >
-          <ListItemIcon
-            sx={{
-              minWidth: "36px",
-              p: "3px 0",
-              color: "inherit",
-            }}
-          >
-            {itemIcon}
+          <ListItemIcon sx={{
+            minWidth: "36px",
+            p: "3px 0",
+            color: "inherit",
+          }}>
+            <Icon stroke={1.5} size="1.5rem" />
           </ListItemIcon>
-          <ListItemText>
+          {!isCollapsed && <ListItemText>
             <>{item.title}</>
-          </ListItemText>
+          </ListItemText>}
         </ListItemButton>
       </ListItemStyled>
     </List>

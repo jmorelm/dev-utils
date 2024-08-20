@@ -12,7 +12,7 @@ interface TabPanelProps {
   value: number;
 }
 
-function TabPanel(props: TabPanelProps) {
+function TabPanel(props: Readonly<TabPanelProps>) {
   const { children, value, index, ...other } = props;
 
   return (
@@ -65,7 +65,7 @@ const HomePage = () => {
           uploadedFiles[0].content = content;
           setFiles((prevFiles: any) => ({
             ...prevFiles,
-            [tabKey]: [...(prevFiles[tabKey] || []).filter((f:any) => f.type !== 'grant'), ...uploadedFiles],
+            [tabKey]: [...(prevFiles[tabKey] || []).filter((f: any) => f.type !== 'grant'), ...uploadedFiles],
           }));
         };
         reader.readAsText(event.target.files[0]);
@@ -214,7 +214,7 @@ const HomePage = () => {
                         }}
                         onMouseDown={(e) => e.preventDefault()}
                       >
-                        <Box display="flex" alignItems="center" justifyContent="space-between" sx={{paddingLeft: '12px'}}>
+                        <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ paddingLeft: '12px' }}>
                           <Typography variant="h6">{tabName}</Typography>
                           <Box>
                             <IconButton onClick={() => toggleCollapse(tabKey)}>
@@ -225,7 +225,7 @@ const HomePage = () => {
                             </IconButton>
                           </Box>
                         </Box>
-                        <Collapse in={!isCollapsed} style={{marginLeft: '20px'}}>
+                        <Collapse in={!isCollapsed} style={{ marginLeft: '20px' }}>
                           <Droppable droppableId={tabKey} type="items">
                             {(provided) => (
                               <div ref={provided.innerRef} {...provided.droppableProps}>
@@ -241,7 +241,7 @@ const HomePage = () => {
                                         onChange={(e: any) => handleGrantEdit(e, tabKey, file.id)}
                                       />
                                       <IconButton onClick={() => handleDelete(tabKey, file.id)}>
-                                          <Delete />
+                                        <Delete />
                                       </IconButton>
                                     </Box>
                                   ) : (
@@ -260,9 +260,9 @@ const HomePage = () => {
                                             ...provided.draggableProps.style,
                                           }}
                                         >
-                                         <Box display="flex" alignItems="center" justifyContent="space-between">
+                                          <Box display="flex" alignItems="center" justifyContent="space-between">
                                             <Box display="flex">
-                                              <ArticleIcon style={{marginRight: '8px'}}></ArticleIcon>
+                                              <ArticleIcon style={{ marginRight: '8px' }}></ArticleIcon>
                                               <Typography>{file.name}</Typography>
                                             </Box>
                                             <IconButton onClick={() => handleDelete(tabKey, file.id)}>
@@ -296,16 +296,9 @@ const HomePage = () => {
 
   return (
     <>
+      <h2 style={{ textAlign: "center" }}>GENERAR PASOS DE COMPILACION</h2>
       <CssBaseline />
       <Box mt={2} mb={2} display="flex" justifyContent="space-between">
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleGenerateFile}
-          disabled={!isDataLoaded}
-        >
-          Generar Archivo
-        </Button>
         <Button
           variant="contained"
           color="secondary"
@@ -313,6 +306,14 @@ const HomePage = () => {
           disabled={!isDataLoaded}
         >
           Reiniciar
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleGenerateFile}
+          disabled={!isDataLoaded}
+        >
+          Generar Archivo
         </Button>
       </Box>
       <AppBar position="static">
@@ -363,7 +364,7 @@ const HomePage = () => {
           </TabPanel>
         </Box>
       </Box>
-      <Box style={{textAlign: 'center'}}>
+      <Box style={{ textAlign: 'center' }}>
         <Typography variant="h6">Archivos y Granteos Cargados</Typography>
         {renderTree()}
       </Box>

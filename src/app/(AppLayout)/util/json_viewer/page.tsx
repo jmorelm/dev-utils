@@ -75,6 +75,7 @@ const JSONViewer = () => {
 
   return (
     <Container>
+      <h2 style={{ textAlign: "center" }}>EDITOR JSON</h2>
       <input
         ref={fileInputRef}
         type="file"
