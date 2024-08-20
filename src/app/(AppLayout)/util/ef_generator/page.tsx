@@ -1,7 +1,10 @@
 'use client';
 import { useState } from 'react';
 import { TextField, Button, Select, MenuItem, InputLabel, FormControl, Grid, Tabs, Tab, Box } from '@mui/material';
-import MonacoEditor from 'react-monaco-editor';
+import dynamic from 'next/dynamic';
+
+// Cargar MonacoEditor dinámicamente solo en el lado del cliente
+const MonacoEditor = dynamic(() => import('react-monaco-editor'), { ssr: false });
 
 function toPascalCase(str: string) {
     return str
