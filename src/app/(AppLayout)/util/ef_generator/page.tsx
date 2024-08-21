@@ -11,10 +11,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
-// Cargar MonacoEditor dinámicamente solo en el lado del cliente
 const MonacoEditor = dynamic(() => import('react-monaco-editor'), { ssr: false });
 
-// Lista de palabras reservadas de Oracle
 const ORACLE_RESERVED_WORDS = new Set([
     'SELECT', 'FROM', 'WHERE', 'INSERT', 'UPDATE', 'DELETE', 'CREATE', 'TABLE', 'DROP',
     'ALTER', 'ADD', 'COLUMN', 'AND', 'OR', 'NOT', 'NULL', 'JOIN', 'ON', 'IN', 'SET', 'VALUES', 
@@ -28,12 +26,8 @@ function toPascalCase(str: string) {
 }
 
 function parseSQLScript(script: string) {
-    // Hacer que el regex sea insensible a mayúsculas/minúsculas con la bandera `i`
     const tableRegex = /CREATE\s+TABLE\s+(\w+)\.(\w+)\s*\(([\s\S]+?)\)\s*;/gi;
-
-    // Dividir el script en secciones basadas en punto y coma
     const scriptSections = script.split(';').map(section => section.trim()).filter(section => section.length > 0);
-
     const tables = [];
 
     for (const section of scriptSections) {
@@ -43,8 +37,8 @@ function parseSQLScript(script: string) {
             const tableName = match[2];
             const columns: string[] = [];
             const columnRegex = /(\w+)\s+\w+(\([\d,]+\))?(\s+NOT NULL|\s+DEFAULT\s+\w+|\s+PRIMARY KEY)?/gi;
-
             let columnMatch;
+
             while ((columnMatch = columnRegex.exec(match[3])) !== null) {
                 const columnName = columnMatch[1].toUpperCase();
                 if (!ORACLE_RESERVED_WORDS.has(columnName)) {
@@ -176,7 +170,6 @@ function TableRelationshipManager({ tables, setRelationships }: { tables: any[],
 
 function generateOracleQuery(relationships: any[], tables: any) {
     if (relationships.length === 0) {
-        // Caso especial para cuando solo hay una tabla y no hay relaciones
         if (tables.length === 1) {
             return `SELECT * FROM ${tables[0].schema}.${tables[0].name};`;
         }
@@ -187,12 +180,12 @@ function generateOracleQuery(relationships: any[], tables: any) {
     const baseTable = relationships[0].tables[0].table;
     let query = `SELECT * FROM ${baseTableSchema}.${baseTable}`;
 
-    for (let i = 0; i < relationships.length; i++) {
-        for (let j = 1; j < relationships[i].tables.length; j++) {
+    for (const element of relationships) {
+        for (let j = 1; j < element.tables.length; j++) {
             const currentTableSchema = tables[j].schema;
-            const currentTable = relationships[i].tables[j].table;
-            const baseColumn = relationships[i].tables[j - 1].column;
-            const currentColumn = relationships[i].tables[j].column;
+            const currentTable = element.tables[j].table;
+            const baseColumn = element.tables[j - 1].column;
+            const currentColumn = element.tables[j].column;
 
             query += `\nJOIN ${currentTableSchema}.${currentTable} ON ${baseTableSchema}.${baseTable}.${baseColumn} = ${currentTableSchema}.${currentTable}.${currentColumn}`;
         }

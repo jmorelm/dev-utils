@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { Box, Button, TextField } from '@mui/material';
@@ -7,13 +6,11 @@ import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import { RestartAlt } from '@mui/icons-material';
 
-// Cargar MonacoEditor dinámicamente solo en el lado del cliente
 const MonacoEditor = dynamic(() => import('react-monaco-editor'), { ssr: false });
 
 function parsePLSQLScript(script: string) {
     const headerRegex = /^(.*?)(BEGIN)/is;
     const functionRegex = /(\bFUNCTION\b\s+\w+\s*\([\s\S]*?\)\s+RETURN\s+\w+\s+IS\b[\s\S]+?END\s+\w+;)/gi;
-    // const exceptionBlockRegex = /EXCEPTION([\s\S]+?)END;/gi;
     const selectRegex = /(SELECT[\s\S]+?FROM[\s\S]+?(?=;|END|LOOP))/gi;
     const insertRegex = /(INSERT[\s\S]+?INTO[\s\S]+?(?=;|END))/gi;
     const updateRegex = /(UPDATE[\s\S]+?SET[\s\S]+?(?:;|.*?COMMIT\s*;|END))/gi;
@@ -28,29 +25,25 @@ function parsePLSQLScript(script: string) {
 
     const functions = Array.from(script.matchAll(functionRegex), match => match[0]);
 
-    // Declaraciones de variables
     const variableDeclarations = Array.from(script.matchAll(variableDeclarationRegex), match => {
-        const variableName = match[1]; // Nombre de la variable
-        const variableType = match[2]; // Tipo de la variable
-        const variableValue = match[3] ? match[3].trim() : ''; // Valor asignado (opcional)
+        const variableName = match[1];
+        const variableType = match[2];
+        const variableValue = match[3] ? match[3].trim() : '';
         return `${variableName} ${variableType}${variableValue ? ' ' + variableValue : ''};`;
     }).join('\n');
 
-    // Asignaciones de valores a variables
     const variableAssignments = Array.from(script.matchAll(variableAssignmentRegex), match => {
-        const variableName = match[1]; // Nombre de la variable
-        const assignedValue = match[2]; // Valor asignado
+        const variableName = match[1];
+        const assignedValue = match[2];
         return `${variableName} := ${assignedValue};`;
     }).join('\n');
 
-    // const nonOpenContent = script.replace(openRegex, ''); // Remover secciones OPEN FOR para evitar duplicación de SELECTs
     const selects = Array.from(script.matchAll(selectRegex), match => match[0]);
     const inserts = Array.from(script.matchAll(insertRegex), match => match[0]);
     const updates = Array.from(script.matchAll(updateRegex), match => match[0]);
     const deletes = Array.from(script.matchAll(deleteRegex), match => match[0]);
     const loops = Array.from(script.matchAll(loopRegex), match => match[0]);
 
-    // Asegurarse de agregar las secciones OPEN FOR al árbol
     const opens = Array.from(script.matchAll(openRegex), match => match[0]);
 
     const sections = [
@@ -90,7 +83,7 @@ const PLTreeView = ({ script }: { script: string }) => {
                 {sections.map(section => (
                     <TreeItem key={section.id} itemId={section.id} label={section.title} onClick={() => handleSelect(section.id)}>
                         <MonacoEditor
-                            height="200"
+                            height="400"
                             language="sql"
                             theme="vs-dark"
                             value={section.content}
