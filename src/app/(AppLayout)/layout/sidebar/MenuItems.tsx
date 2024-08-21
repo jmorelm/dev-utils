@@ -3,7 +3,7 @@ import DifferenceIcon from '@mui/icons-material/Difference';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import DynamicFormIcon from '@mui/icons-material/DynamicForm';
 import { uniqueId } from "lodash";
-import { ChangeCircle, Grading } from '@mui/icons-material';
+import { AccountTree, ChangeCircle, Grading } from '@mui/icons-material';
 
 const Menuitems = [
   {
@@ -33,6 +33,12 @@ const Menuitems = [
     title: "Oracle a Entity Framework",
     icon: DynamicFormIcon,
     href: "/util/ef_generator",
+  },
+  {
+    id: uniqueId(),
+    title: "Analisis PL/SQL",
+    icon: AccountTree,
+    href: "/util/plsql_tree",
   },
   {
     id: uniqueId(),
