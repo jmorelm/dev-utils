@@ -3,6 +3,7 @@ import DifferenceIcon from '@mui/icons-material/Difference';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import DynamicFormIcon from '@mui/icons-material/DynamicForm';
 import { uniqueId } from "lodash";
+import { ChangeCircle, Grading } from '@mui/icons-material';
 
 const Menuitems = [
   {
@@ -24,7 +25,7 @@ const Menuitems = [
   {
     id: uniqueId(),
     title: "Herramientas Base64",
-    icon: SwapHorizIcon,
+    icon: ChangeCircle,
     href: "/util/base64_tools",
   },
   {
@@ -34,13 +35,9 @@ const Menuitems = [
     href: "/util/ef_generator",
   },
   {
-    navLavel: true,
-    subheader: "QA"
-  },
-  {
     id: uniqueId(),
     title: "Pasos de compilacion",
-    icon: SwapHorizIcon,
+    icon: Grading,
     href: "/qa/comp_steps",
   },
 ];

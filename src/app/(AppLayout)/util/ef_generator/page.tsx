@@ -1,10 +1,25 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TextField, Button, Select, MenuItem, InputLabel, FormControl, Grid, Tabs, Tab, Box } from '@mui/material';
 import dynamic from 'next/dynamic';
+import { GenericToast } from '../(components)/GenericToast';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import BoltIcon from '@mui/icons-material/Bolt';
+import PlusOneIcon from '@mui/icons-material/PlusOne';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import PostAddIcon from '@mui/icons-material/PostAdd';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 // Cargar MonacoEditor dinámicamente solo en el lado del cliente
 const MonacoEditor = dynamic(() => import('react-monaco-editor'), { ssr: false });
+
+// Lista de palabras reservadas de Oracle
+const ORACLE_RESERVED_WORDS = new Set([
+    'SELECT', 'FROM', 'WHERE', 'INSERT', 'UPDATE', 'DELETE', 'CREATE', 'TABLE', 'DROP',
+    'ALTER', 'ADD', 'COLUMN', 'AND', 'OR', 'NOT', 'NULL', 'JOIN', 'ON', 'IN', 'SET', 'VALUES', 
+    'PRIMARY', 'KEY', 'FOREIGN', 'REFERENCES', 'CHECK', 'CONSTRAINT', 'UNIQUE', 'INDEX'
+]);
 
 function toPascalCase(str: string) {
     return str
@@ -13,21 +28,31 @@ function toPascalCase(str: string) {
 }
 
 function parseSQLScript(script: string) {
-    const tableRegex = /CREATE TABLE\s+(\w+)\.(\w+)\s*\(([\s\S]+?)\);/g;
-    const columnRegex = /(\w+)\s+\w+(\([\d,]+\))?(\s+NOT NULL|\s+DEFAULT\s+\w+|\s+PRIMARY KEY)?/g;
+    // Hacer que el regex sea insensible a mayúsculas/minúsculas con la bandera `i`
+    const tableRegex = /CREATE\s+TABLE\s+(\w+)\.(\w+)\s*\(([\s\S]+?)\)\s*;/gi;
 
-    let match;
+    // Dividir el script en secciones basadas en punto y coma
+    const scriptSections = script.split(';').map(section => section.trim()).filter(section => section.length > 0);
+
     const tables = [];
 
-    while ((match = tableRegex.exec(script)) !== null) {
-        const schemaName = match[1];
-        const tableName = match[2];
-        const columns: string[] = [];
-        let columnMatch;
-        while ((columnMatch = columnRegex.exec(match[3])) !== null) {
-            columns.push(columnMatch[1]);
+    for (const section of scriptSections) {
+        let match;
+        while ((match = tableRegex.exec(section + ';')) !== null) {
+            const schemaName = match[1];
+            const tableName = match[2];
+            const columns: string[] = [];
+            const columnRegex = /(\w+)\s+\w+(\([\d,]+\))?(\s+NOT NULL|\s+DEFAULT\s+\w+|\s+PRIMARY KEY)?/gi;
+
+            let columnMatch;
+            while ((columnMatch = columnRegex.exec(match[3])) !== null) {
+                const columnName = columnMatch[1].toUpperCase();
+                if (!ORACLE_RESERVED_WORDS.has(columnName)) {
+                    columns.push(columnName);
+                }
+            }
+            tables.push({ schema: schemaName, name: tableName, columns });
         }
-        tables.push({ schema: schemaName, name: tableName, columns });
     }
 
     return tables;
@@ -49,7 +74,7 @@ function OracleScriptLoader({ setTables, resetAll }: { setTables: (tables: any[]
     return (
         <div>
             <TextField
-                label="Pegar aquí los scripts de creacion de tabla - SQL"
+                label="Pegar aquí los scripts de creación de tabla - SQL"
                 multiline
                 rows={10}
                 value={script}
@@ -57,8 +82,11 @@ function OracleScriptLoader({ setTables, resetAll }: { setTables: (tables: any[]
                 fullWidth
                 variant="outlined"
             />
-            <Button variant="contained" color="primary" onClick={parseScript} style={{ marginTop: '20px' }}>
-                Cargar Tablas
+            <Button variant="contained" color="primary" startIcon={<CheckCircleIcon/>} onClick={parseScript} style={{ marginTop: '20px' }}>
+                Confirmar Tablas
+            </Button>
+            <Button variant="contained" startIcon={<RestartAltIcon/>} color="secondary" onClick={resetAll} style={{ marginTop: '20px', marginLeft: '8px' }}>
+                Reiniciar Todo
             </Button>
         </div>
     );
@@ -98,7 +126,7 @@ function TableRelationshipManager({ tables, setRelationships }: { tables: any[],
     return (
         <div>
             <h3>Relacionar columnas entre tablas</h3>
-            {relations.map((rel, relIndex) => (
+            {tables.length > 1 && relations.map((rel, relIndex) => (
                 <div key={relIndex} style={{ marginBottom: '20px', borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>
                     <h4>Relación {relIndex + 1}</h4>
                     {rel.tables.map((tableRel, tableIndex) => (
@@ -135,19 +163,25 @@ function TableRelationshipManager({ tables, setRelationships }: { tables: any[],
                             </Grid>
                         </Grid>
                     ))}
-                    <Button onClick={() => addTableToRelation(relIndex)} variant="contained" style={{ marginTop: '10px', marginRight: '10px' }}>Añadir Tabla a Relación</Button>
-                    <Button onClick={() => removeRelation(relIndex)} variant="contained" color="secondary" style={{ marginTop: '10px' }}>Eliminar Relación</Button>
+                    <Button onClick={() => addTableToRelation(relIndex)} startIcon={<PostAddIcon/>} variant="contained" style={{ marginTop: '10px', marginRight: '10px' }}>Añadir tabla a relación</Button>
+                    <Button onClick={() => removeRelation(relIndex)} variant="contained" startIcon={<RemoveCircleIcon/>} color="secondary" style={{ marginTop: '10px' }}>Eliminar relación</Button>
                 </div>
             ))}
-            <h3>Mas opciones</h3>
-            <Button onClick={addRelationField} variant="contained" color="secondary" style={{ marginRight: '10px' }}>Añadir Nueva Relación</Button>
-            <Button onClick={handleSaveRelations} variant="contained" color="primary">Guardar / generar query</Button>
+            <h3>Más opciones</h3>
+            <Button onClick={addRelationField} startIcon={<PlusOneIcon/>} variant="contained" color="secondary" style={{ marginRight: '10px' }}>Añadir nuevo grupo de relación</Button>
+            <Button onClick={handleSaveRelations} startIcon={<BoltIcon/>} variant="contained" color="primary">Generar resultado</Button>
         </div>
     );
 }
 
 function generateOracleQuery(relationships: any[], tables: any) {
-    if (relationships.length === 0) return '';
+    if (relationships.length === 0) {
+        // Caso especial para cuando solo hay una tabla y no hay relaciones
+        if (tables.length === 1) {
+            return `SELECT * FROM ${tables[0].schema}.${tables[0].name};`;
+        }
+        return '';
+    }
 
     const baseTableSchema = tables[0].schema;
     const baseTable = relationships[0].tables[0].table;
@@ -171,11 +205,15 @@ function EFQueryGenerator({ tables, relationships }: { tables: any[], relationsh
     const [tabIndex, setTabIndex] = useState(0);
 
     const generateQueries = () => {
+        if (relationships.length === 0 && tables.length === 1) {
+            return `var resultado = await context.${tables[0].name};`;
+        }
+
         return relationships.map((rel, i) => {
             let baseTable = rel.tables[0].table;
             let baseAlias = baseTable.toLowerCase();
 
-            let query = `context.${baseTable}`;
+            let query = `var resultado = await context.${baseTable}`;
 
             for (let j = 1; j < rel.tables.length; j++) {
                 const currentTable = rel.tables[j].table;
@@ -209,6 +247,24 @@ function EFQueryGenerator({ tables, relationships }: { tables: any[], relationsh
     const queries = generateQueries();
     const oracleQuery = generateOracleQuery(relationships, tables);
 
+    // Función para copiar el contenido del editor actual al portapapeles
+    const handleCopyToClipboard = () => {
+        let contentToCopy = '';
+        if (tabIndex === 0) {
+            contentToCopy = queries;
+        } else if (tabIndex === 1) {
+            contentToCopy = oracleQuery;
+        } else if (tabIndex >= 2) {
+            contentToCopy = generateMappings(tables[tabIndex - 2]);
+        }
+
+        navigator.clipboard.writeText(contentToCopy).then(() => {
+            GenericToast.showInfo('Copiado al portapapeles.');
+        }).catch(err => {
+            console.error('Error al copiar:', err);
+        });
+    };
+
     return (
         <div>
             <h3>Resultado generado</h3>
@@ -219,6 +275,9 @@ function EFQueryGenerator({ tables, relationships }: { tables: any[], relationsh
                     <Tab key={index} label={`Mapear: ${table.name}`} />
                 ))}
             </Tabs>
+            <Box sx={{ padding: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Button variant="contained" startIcon={<ContentCopyIcon/>} onClick={handleCopyToClipboard}>Copiar al portapapeles</Button>
+            </Box>
             <Box sx={{ padding: 2 }}>
                 {tabIndex === 0 && (
                     <MonacoEditor
@@ -306,6 +365,12 @@ export default function HomePage() {
         setRelationships([]);
     };
 
+    useEffect(() => {
+        if (tables.length === 1 && relationships.length === 0) {
+            setRelationships([{ tables: [{ table: tables[0].name, column: '' }] }]);
+        }
+    }, [tables]);
+
     return (
         <div>
             <h2 style={{ textAlign: "center" }}>GENERAR CONSULTAS DE EF DESDE ORACLE</h2>
@@ -319,9 +384,6 @@ export default function HomePage() {
             {tables.length > 0 && relationships.length > 0 && (
                 <EFQueryGenerator tables={tables} relationships={relationships} />
             )}
-            <Button variant="contained" color="secondary" onClick={resetAll} style={{ marginTop: '20px' }}>
-                Reiniciar Todo
-            </Button>
         </div>
     );
 }
