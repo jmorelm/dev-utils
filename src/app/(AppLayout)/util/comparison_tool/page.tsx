@@ -17,6 +17,7 @@ const ComparePage = () => {
                         modified={file2Content}
                         height={700}
                         language='csharp'
+                        theme='vs-dark'
                         options={{
                             automaticLayout: true,
                             renderSideBySide: true,
