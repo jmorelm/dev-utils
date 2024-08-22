@@ -80,7 +80,7 @@ const PLTreeView = ({ script }: { script: string }) => {
                 aria-label="Secciones del procedimiento"
                 sx={{ flexGrow: 1, overflowY: 'auto', marginTop: '4px' }}
             >
-                {sections.map(section => (
+                {sections.length > 0 ? sections.map(section => (
                     <TreeItem key={section.id} itemId={section.id} label={section.title} onClick={() => handleSelect(section.id)}>
                         <MonacoEditor
                             height="400"
@@ -102,7 +102,7 @@ const PLTreeView = ({ script }: { script: string }) => {
                                 fontLigatures: true,
                             }} />
                     </TreeItem>
-                ))}
+                )) : null}
             </SimpleTreeView>
         </Box></>
     );
