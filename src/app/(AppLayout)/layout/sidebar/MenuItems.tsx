@@ -1,8 +1,7 @@
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import DifferenceIcon from '@mui/icons-material/Difference';
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import DynamicFormIcon from '@mui/icons-material/DynamicForm';
-import { uniqueId } from "lodash";
+import { v4 } from 'uuid';
 import { AccountTree, ChangeCircle, Grading } from '@mui/icons-material';
 
 const Menuitems = [
@@ -11,37 +10,37 @@ const Menuitems = [
     subheader: "Utilidades"
   },
   {
-    id: uniqueId(),
+    id: v4(),
     title: "JSON Editor",
     icon: AccountTreeIcon,
     href: "/util/json_viewer",
   },
   {
-    id: uniqueId(),
+    id: v4(),
     title: "Comparar Texto",
     icon: DifferenceIcon,
     href: "/util/comparison_tool",
   },
   {
-    id: uniqueId(),
+    id: v4(),
     title: "Herramientas Base64",
     icon: ChangeCircle,
     href: "/util/base64_tools",
   },
   {
-    id: uniqueId(),
+    id: v4(),
     title: "Oracle a Entity Framework",
     icon: DynamicFormIcon,
     href: "/util/ef_generator",
   },
   {
-    id: uniqueId(),
+    id: v4(),
     title: "Analisis PL/SQL",
     icon: AccountTree,
     href: "/util/plsql_tree",
   },
   {
-    id: uniqueId(),
+    id: v4(),
     title: "Pasos de compilacion",
     icon: Grading,
     href: "/qa/comp_steps",
